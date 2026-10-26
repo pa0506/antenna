@@ -1,16 +1,19 @@
-# Horn Antenna-3D
 import numpy as np
 import matplotlib.pyplot as plt
-theta = np.linspace(0, np.pi, 250)
-phi = np.linspace(0, 2*np.pi, 250)
-theta, phi = np.meshgrid(theta, phi)
-5
-n = 6
-R = np.abs(np.cos(theta))**n
-X = R * np.sin(theta) * np.cos(phi)
-Y = R * np.sin(theta) * np.sin(phi)
-Z = R * np.cos(theta)
-ax = plt.figure().add_subplot(projection='3d')
-ax.plot_surface(X, Y, Z, cmap="inferno")
-ax.set_title("Horn Antenna (3D)")
+theta = np.linspace(0, np.pi, 220)
+phi = np.linspace(0, 2*np.pi, 240)
+TH, PH = np.meshgrid(theta, phi)
+u = 3*np.sin(TH)*np.cos(PH)
+v = 2*np.sin(TH)*np.sin(PH)
+E = np.abs(np.sinc(u/np.pi) * np.sinc(v/np.pi))
+E = E / E.max()
+X = E*np.sin(TH)*np.cos(PH)
+Y = E*np.sin(TH)*np.sin(PH)
+Z = E*np.cos(TH)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection="3d")
+ax.plot_surface(X, Y, Z, cmap="inferno", linewidth=0)
+ax.set_title("Approximate 3D Horn Antenna Pattern")
+ax.set_xlabel("X"); ax.set_ylabel("Y"); ax.set_zlabel("Z")
+plt.tight_layout()
 plt.show()
